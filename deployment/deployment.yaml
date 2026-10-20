@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: heart-disease-mlops
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: heart-disease-mlops
+
+  template:
+    metadata:
+      labels:
+        app: heart-disease-mlops
+
+    spec:
+      containers:
+      - name: heart-disease-mlops
+
+        image: YOUR_DOCKERHUB_USERNAME/heart-disease-mlops:latest
+
+        imagePullPolicy: Always
+
+        ports:
+        - containerPort: 8000
+
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8000
+
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8000
+
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
